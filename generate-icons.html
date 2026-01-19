@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Extension Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    .preview {
+      margin: 20px 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #ddd;
+    }
+    .instructions {
+      background: #f0f9ff;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      border-left: 4px solid #667eea;
+    }
+    .instructions ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Generate Extension Icons</h1>
+    
+    <p>Click the buttons below to generate and download placeholder icons for the extension:</p>
+    
+    <div class="preview">
+      <canvas id="canvas16" width="16" height="16"></canvas>
+      <canvas id="canvas48" width="48" height="48"></canvas>
+      <canvas id="canvas128" width="128" height="128"></canvas>
+    </div>
+    
+    <div>
+      <button onclick="generateAll()">Generate All Icons</button>
+    </div>
+    
+    <div class="instructions">
+      <strong>Instructions:</strong>
+      <ol>
+        <li>Click "Generate All Icons" button above</li>
+        <li>Three PNG files will be downloaded: icon16.png, icon48.png, icon128.png</li>
+        <li>Move these files to the <code>icons/</code> folder in the project</li>
+        <li>Run <code>npm run build</code> to rebuild the extension</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+      
+      // Draw "AI" text
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('AI', size / 2, size / 2);
+    }
+
+    function downloadCanvas(canvas, filename) {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function generateAll() {
+      const sizes = [
+        { id: 'canvas16', size: 16, filename: 'icon16.png' },
+        { id: 'canvas48', size: 48, filename: 'icon48.png' },
+        { id: 'canvas128', size: 128, filename: 'icon128.png' }
+      ];
+
+      sizes.forEach(({ id, size, filename }) => {
+        const canvas = document.getElementById(id);
+        drawIcon(canvas, size);
+        setTimeout(() => downloadCanvas(canvas, filename), 100);
+      });
+
+      alert('Icons generated! Check your Downloads folder for icon16.png, icon48.png, and icon128.png');
+    }
+
+    // Draw preview on load
+    window.onload = function() {
+      drawIcon(document.getElementById('canvas16'), 16);
+      drawIcon(document.getElementById('canvas48'), 48);
+      drawIcon(document.getElementById('canvas128'), 128);
+    };
+  </script>
+</body>
+</html>

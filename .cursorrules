@@ -1,0 +1,120 @@
+# Cursor AI Rules for AI Web Agent Project
+
+## Core Principle: MINIMAL CHANGES ONLY
+
+When making changes to this project:
+
+1. **NEVER recreate the entire project**
+2. **NEVER rewrite entire files unless absolutely necessary**
+3. **Work ONLY with minimal diffs/patches**
+4. **Show changes as "File: X / Patch: Y" with brief inserts**
+
+## Workflow
+
+### 1. Planning Phase
+Before making ANY changes:
+- List ALL files that will be modified/added (no code)
+- Get user confirmation if unclear
+- Document why each file needs changes
+
+### 2. Implementation Phase
+- Make ONE change at a time
+- Use StrReplace for small modifications
+- Only use Write for NEW files
+- Test each change before moving to next
+
+### 3. Documentation Phase
+After changes:
+- Show commands to run/test
+- Provide checklist for verification
+- Update relevant docs (README, QUICKSTART)
+
+## Project Structure (DO NOT CHANGE)
+
+```
+src/                    # Chrome Extension - TypeScript
+├── background/         # Service worker, agent loop
+├── content/            # Content script, DOM automation
+├── panel/              # Side panel UI
+├── llm/                # LLM client/proxy
+└── shared/             # Shared types
+
+agent-proxy/            # Node.js proxy server
+├── src/server.ts       # Express API
+└── src/llmClient.ts    # LLM provider client
+```
+
+## Forbidden Actions
+
+❌ Mass renaming files  
+❌ Changing bundler/linter without request  
+❌ Reformatting entire project  
+❌ Changing coding style globally  
+❌ Adding dependencies without necessity  
+❌ Rewriting working code "for best practices"  
+
+## Allowed Actions
+
+✅ Add new files to new folders (e.g., agent-proxy/)  
+✅ Point modifications to specific functions/sections  
+✅ Fix bugs with targeted patches  
+✅ Add features with minimal file changes  
+✅ Update docs to reflect changes  
+
+## Communication Style
+
+- Be concise
+- Show file path + specific lines changed
+- Explain WHY the change is needed
+- Provide before/after context
+- Include test commands
+
+## Example Good Response
+
+```
+File: src/panel/panel.ts
+Patch: Lines 45-48
+
+- const apiKey = storage.apiKey;
++ const proxyUrl = storage.proxyUrl;
+
+Reason: Switch from API key to proxy URL storage
+Test: npm run build && reload extension
+```
+
+## Example Bad Response
+
+❌ "I'll recreate the entire project with better structure..."  
+❌ "Let me rewrite all files to use modern patterns..."  
+❌ Showing full file contents when only 2 lines changed  
+
+## Special Cases
+
+### Adding New Features
+1. Identify minimum files to change
+2. Add new files in appropriate folders
+3. Point-modify existing files
+4. Update imports/exports only where needed
+
+### Fixing Bugs
+1. Locate exact bug location
+2. Minimal fix (1-5 lines if possible)
+3. Test the fix
+4. Update tests if they exist
+
+### Refactoring
+Only when explicitly requested:
+1. Show current structure
+2. Propose minimal changes
+3. Get approval
+4. Implement incrementally
+
+## Current Architecture Constraints
+
+- Extension uses Manifest V3 (cannot change)
+- Proxy server on localhost:3131 (configurable)
+- No hardcoded selectors (data-agent-id only)
+- Security gate must stay enabled
+- Agent loop structure is stable
+
+When in doubt: **ASK before making large changes**

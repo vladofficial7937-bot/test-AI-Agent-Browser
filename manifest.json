@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "AI Web Agent",
+  "version": "1.0.0",
+  "description": "Autonomous AI agent for multi-step browser tasks",
+  "permissions": [
+    "activeTab",
+    "sidePanel",
+    "storage",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "serviceWorker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "AI Web Agent"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
